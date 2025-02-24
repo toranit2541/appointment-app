@@ -1,0 +1,147 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Appointment;
+
+class AdminController extends Controller
+{
+    public function index()
+    {
+        $appointments = Appointment::all();
+        return view('appointments.index', compact('appointments'));
+    }
+
+    public function create()
+    {
+        return view('admins.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+        ]);
+
+        User::create($request->all());
+
+        return redirect()->route('admins.index')->with('success', 'User created successfully!');
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admins.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $id,
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+
+        return redirect()->route('admins.index')->with('success', 'User updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('admins.index')->with('success', 'User deleted successfully!');
+    }
+
+    public function appointments()
+    {
+        $appointments = Appointment::all();
+        return view('admins.appointments', compact('appointments'));
+    }
+
+    public function showAppointment(Appointment $appointment)
+    {
+        return view('admins.appointment_show', compact('appointment'));
+    }
+
+    public function editAppointment(Appointment $appointment)
+    {
+        return view('admins.appointment_edit', compact('appointment'));
+    }
+
+    public function updateAppointment(Request $request, Appointment $appointment)
+    {
+        $request->validate([
+            'prefix' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'id_card' => 'required',
+            'birthdate' => 'required|date',
+            'email' => 'required|email',
+            'appointment_date' => 'required|date',
+        ]);
+
+        $appointment->update([
+            'prefix' => $request->prefix,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'id_card' => $request->id_card,
+            'birthdate' => $request->birthdate,
+            'email' => $request->email,
+            'appointment_date' => $request->appointment_date,
+        ]);
+
+        return redirect()->route('admins.appointments')->with('success', 'Appointment updated successfully!');
+    }
+
+
+    public function destroyAppointment(Appointment $appointment)
+    {
+        $appointment->delete();
+
+        return redirect()->route('admins.appointments')->with('success', 'Appointment deleted successfully!');
+    }
+
+    public function exportAppointments()
+    {
+        $appointments = Appointment::all();
+
+        $csvFileName = 'appointments_' . date('Ymd_His') . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $csvFileName . '"',
+        ];
+
+        $handle = fopen('php://output', 'w');
+        fputcsv($handle, ['ลำดับ', 'คำนำหน้า', 'ชื่อ', 'นามสกุล', 'อีเมล', 'วัน-เดือน-ปี เกิด', 'เลขบัตรประชาชน', 'วันที่จอง', 'สร้างเมื่อ']);
+
+        foreach ($appointments as $appointment) {
+            fputcsv($handle, [
+                $appointment->id,
+                $appointment->prefix,
+                $appointment->first_name,
+                $appointment->last_name,
+                $appointment->email,
+                $appointment->birthdate,
+                $appointment->id_card,
+                $appointment->appointment_date,
+                $appointment->created_at,
+            ]);
+        }
+
+        fclose($handle);
+
+        return response()->stream(
+            function () use ($handle) {
+                fclose($handle);
+            },
+            200,
+            $headers
+        );
+    }
+}
