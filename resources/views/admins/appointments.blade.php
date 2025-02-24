@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>การจองทั้งหมด</title>
+    <title>โรงพยาบาลรวมชัยประชารักษ์</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>

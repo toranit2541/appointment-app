@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>การจองทั้งหมด</title>
+    <title>โรงพยาบาลรวมชัยประชารักษ์</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head> 
 
