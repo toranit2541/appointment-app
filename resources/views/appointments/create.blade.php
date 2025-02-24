@@ -4,74 +4,74 @@
 <head>
     <meta charset="UTF-8">
     <title>กายภาพบำบัด โรงพยาบาลรวมชัยประชารักษ์</title>
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
-    <style>
-        /* Basic Modal Styling */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 50%;
-        }
-
-        .close {
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <h1>สมุดการจองการรับบริการ</h1>
-    <a href="{{ route('appointments.index') }}">กลับ</a>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">สมุดการจองการรับบริการ</h1>
+        <a href="{{ route('appointments.index') }}" class="block text-center mt-4 text-gray-600 hover:underline">กลับ</a>
 
-    <h1>ปฏิทินการจอง</h1>
-    <div id="calendar"></div>
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">ปฏิทินการจอง</h2>
+        <div id="calendar" class="border p-4 rounded-lg shadow-md bg-gray-50"></div>
 
-    <!-- Popup Modal -->
-    <div id="appointmentModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>จองการรับบริการ</h2>
-            <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST">
-                @csrf
-                <p>คำนำหน้า: <input type="text" name="prefix" required></p>
-                <p>ชื่อ: <input type="text" name="first_name" required></p>
-                <p>นามสกุล: <input type="text" name="last_name" required></p>
-                <p>เลขบัตรประชาชน: <input type="text" name="id_card" required></p>
-                <p>วัน-เดือน-ปี เกิด: <input type="date" name="birthdate" required></p>
-                <p>อีเมล: <input type="email" name="email" required></p>
-                <p>จองวันที่: <input type="datetime-local" id="appointmentDateInput" name="appointment_date" required>
-                </p>
-                <button type="submit">จอง</button>
-            </form>
+        <!-- Popup Modal -->
+        <div id="appointmentModal"
+            class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
+                <span class="close text-gray-500 text-xl cursor-pointer float-right">&times;</span>
+                <h2 class="text-lg font-bold mb-4">จองการรับบริการ</h2>
+                <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST" class="space-y-4">
+                    @csrf
+                    <div>
+                        <label class="block text-gray-700">คำนำหน้า</label>
+                        <input type="text" name="prefix" required class="w-full border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">ชื่อ</label>
+                        <input type="text" name="first_name" required class="w-full border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">นามสกุล</label>
+                        <input type="text" name="last_name" required class="w-full border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">เลขบัตรประชาชน</label>
+                        <input type="text" name="id_card" required class="w-full border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">วัน-เดือน-ปี เกิด</label>
+                        <input type="date" name="birthdate" required class="w-full border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">อีเมล</label>
+                        <input type="email" name="email" required class="w-full border-gray-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">จองวันที่</label>
+                        <input type="datetime-local" id="appointmentDateInput" name="appointment_date" required
+                            class="w-full border-gray-300 rounded-lg p-2">
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
+                        จอง
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
 
-    @if($errors->any())
-        <ul style="color: red;">
+        @if($errors->any())
+        <ul class="text-red-500 mt-4">
             @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
+            <li>{{ $error }}</li>
             @endforeach
         </ul>
-    @endif
+        @endif
 
-    <a href="{{ route('admins.index') }}">กลับ</a>
+        <a href="{{ route('admins.index') }}" class="block text-blue-500 mt-6">กลับ</a>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -82,26 +82,26 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                events: '/appointments/events',
+                events: '/appointments/events', // Ensure this endpoint returns a valid JSON array
                 dateClick: function (info) {
-                    modal.style.display = 'block';
+                    modal.classList.remove('hidden');
 
-                    // Use info.dateStr (Recommended)
-                    let selectedDateStr = info.dateStr; // "YYYY-MM-DD"
-                    appointmentDateInput.value = selectedDateStr + 'T09:00';
+                    // Use selected date in input field
+                    let selectedDateStr = info.dateStr;
+                    appointmentDateInput.value = selectedDateStr + 'T09:00'; // Default time 9:00 AM
                 }
             });
 
             calendar.render();
 
-            // Close Modal Logic
+            // Close modal
             closeBtn.onclick = function () {
-                modal.style.display = 'none';
+                modal.classList.add('hidden');
             }
 
             window.onclick = function (event) {
                 if (event.target == modal) {
-                    modal.style.display = 'none';
+                    modal.classList.add('hidden');
                 }
             }
         });
