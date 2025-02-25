@@ -17,6 +17,10 @@
             สมุดการจอง
         </a>
 
+        <a href="{{ route('admin.appointments') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
+            สมุดการจอง
+        </a>
+
         @if(session('success'))
             <p class="text-green-600">{{ session('success') }}</p>
         @endif
@@ -80,6 +84,7 @@
             <a href="{{ route('admins.index') }}" class="text-blue-500 hover:text-blue-700">กลับหน้าหลัก</a>
         </div>
     </div>
+    <script src="{{ asset('js/script.js') }}"></script>
 </body>
 
 </html>

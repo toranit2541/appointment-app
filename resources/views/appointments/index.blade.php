@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>โรงพยาบาลรวมชัยประชารักษ์</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
 </head> 
 
 <body class="bg-gray-100 p-6">
@@ -18,7 +18,7 @@
         @endif
 
         <div class="overflow-x-auto mt-4">
-            <table class="w-full border-collapse border border-gray-300">
+            <table class="table-auto w-full border-collapse border border-gray-400 mt-4">
                 <thead>
                     <tr class="bg-gray-200">
                         <th class="border border-gray-300 px-4 py-2">ลำดับ</th>
