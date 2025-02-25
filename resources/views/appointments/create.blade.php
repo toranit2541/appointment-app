@@ -12,14 +12,13 @@
 <body class="bg-gray-100 p-6">
     <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <h1 class="text-2xl font-bold text-gray-800 mb-4">สมุดการจองการรับบริการ</h1>
-        <a href="{{ route('appointments.index') }}" class="block text-center mt-4 text-gray-600 hover:underline">กลับ</a>
+
 
         <h2 class="text-xl font-semibold text-gray-700 mb-4">ปฏิทินการจอง</h2>
         <div id="calendar" class="border p-4 rounded-lg shadow-md bg-gray-50"></div>
 
         <!-- Popup Modal -->
-        <div id="appointmentModal"
-            class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div id="appointmentModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
                 <span class="close text-gray-500 text-xl cursor-pointer float-right">&times;</span>
                 <h2 class="text-lg font-bold mb-4">จองการรับบริการ</h2>
@@ -54,8 +53,7 @@
                         <input type="datetime-local" id="appointmentDateInput" name="appointment_date" required
                             class="w-full border-gray-300 rounded-lg p-2">
                     </div>
-                    <button type="submit"
-                        class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
+                    <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
                         จอง
                     </button>
                 </form>
@@ -63,14 +61,14 @@
         </div>
 
         @if($errors->any())
-        <ul class="text-red-500 mt-4">
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+            <ul class="text-red-500 mt-4">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         @endif
 
-        <a href="{{ route('admins.index') }}" class="block text-blue-500 mt-6">กลับ</a>
+        <a href="{{ route('appointments.index') }}" class="block text-blue-500 mt-6">กลับ</a>
     </div>
 
     <script>
@@ -80,31 +78,31 @@
             var closeBtn = document.querySelector('.close');
             var appointmentDateInput = document.getElementById('appointmentDateInput');
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                events: '/appointments/events', // Ensure this endpoint returns a valid JSON array
-                dateClick: function (info) {
-                    modal.classList.remove('hidden');
-
-                    // Use selected date in input field
-                    let selectedDateStr = info.dateStr;
-                    appointmentDateInput.value = selectedDateStr + 'T09:00'; // Default time 9:00 AM
-                }
-            });
-
-            calendar.render();
-
-            // Close modal
-            closeBtn.onclick = function () {
-                modal.classList.add('hidden');
+            if (calendarEl) {  // ✅ Ensure FullCalendar initializes only once
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    events: '/appointments/events',
+                    dateClick: function (info) {
+                        modal.classList.remove('hidden');
+                        appointmentDateInput.value = info.dateStr + 'T09:00';
+                    }
+                });
+                calendar.render();
             }
 
+            // ✅ Close modal on button click
+            closeBtn.onclick = function () {
+                modal.classList.add('hidden');
+            };
+
+            // ✅ Close modal when clicking outside it
             window.onclick = function (event) {
                 if (event.target == modal) {
                     modal.classList.add('hidden');
                 }
-            }
+            };
         });
+
     </script>
 </body>
 
