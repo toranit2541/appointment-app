@@ -72,5 +72,8 @@ Route::prefix('admins')->name('admins.')->group(function () {
         Route::get('/{appointment}/edit', [AdminController::class, 'editAppointment'])->name('edit');
         Route::put('/{appointment}', [AdminController::class, 'updateAppointment'])->name('update');
         Route::delete('/{appointment}', [AdminController::class, 'destroyAppointment'])->name('destroy');
+    
+        // ✅ Add the missing approve route
+        Route::patch('/{appointment}/approve', [AdminController::class, 'approveAppointment'])->name('approve');
     });
 });

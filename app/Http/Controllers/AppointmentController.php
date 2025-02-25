@@ -18,6 +18,13 @@ class AppointmentController extends Controller
         return view('appointments.create');
     }
 
+    public function approveAppointment(Appointment $appointment)
+    {
+        $appointment->update(['admin_approve_status' => 'approved']);
+
+        return redirect()->route('admins.appointments.index')->with('success', 'Appointment approved successfully!');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
