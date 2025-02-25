@@ -58,12 +58,23 @@ class AdminController extends Controller
         return redirect()->route('admins.index')->with('success', 'User deleted successfully!');
     }
 
+    // public function appointments()
+    // {
+    //     $appointments = Appointment::all();
+    //     return view('admins.appointments', compact('appointments'));
+    // }
+
     public function appointments()
     {
-        $appointments = Appointment::all();
-        return view('admins.appointments', compact('appointments'));
-    }
+        // Ensure the 'admin_approve_status' column is used correctly
+        $pendingAppointments = Appointment::where('admin_approve_status', 'pending')->get();
+        $approvedAppointments = Appointment::where('admin_approve_status', 'approved')->get();
 
+        // Debugging: Check if the variables contain data
+        // dd($pendingAppointments, $approvedAppointments);
+
+        return view('admins.appointments', compact('pendingAppointments', 'approvedAppointments'));
+    }
     public function showAppointment(Appointment $appointment)
     {
         return view('admins.appointment_show', compact('appointment'));

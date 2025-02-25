@@ -58,11 +58,19 @@ Route::prefix('admins')->name('admins.')->group(function () {
     Route::delete('/{id}', [AdminController::class, 'destroy'])->name('destroy');
 
     // Appointments Management under Admin
+    // Route::prefix('appointments')->name('appointments.')->group(function () {
+    //     Route::get('/', [AppointmentController::class, 'appointments'])->name('index');
+    //     Route::get('/create', [AppointmentController::class, 'create'])->name('create');
+    //     Route::post('/', [AppointmentController::class, 'store'])->name('store');
+    //     Route::get('/calendar', [AppointmentController::class, 'calendar'])->name('calendar');
+    //     Route::get('/events', [AppointmentController::class, 'events'])->name('events');
+    // });
     Route::prefix('appointments')->name('appointments.')->group(function () {
-        Route::get('/', [AppointmentController::class, 'index'])->name('index');
-        Route::get('/create', [AppointmentController::class, 'create'])->name('create');
-        Route::post('/', [AppointmentController::class, 'store'])->name('store');
-        Route::get('/calendar', [AppointmentController::class, 'calendar'])->name('calendar');
-        Route::get('/events', [AppointmentController::class, 'events'])->name('events');
+        Route::get('/', [AdminController::class, 'appointments'])->name('index');
+        Route::get('/export', [AdminController::class, 'exportAppointments'])->name('export');
+        Route::get('/{appointment}', [AdminController::class, 'showAppointment'])->name('show');
+        Route::get('/{appointment}/edit', [AdminController::class, 'editAppointment'])->name('edit');
+        Route::put('/{appointment}', [AdminController::class, 'updateAppointment'])->name('update');
+        Route::delete('/{appointment}', [AdminController::class, 'destroyAppointment'])->name('destroy');
     });
 });

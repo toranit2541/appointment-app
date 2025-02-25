@@ -28,6 +28,7 @@ class AppointmentController extends Controller
             'birthdate' => 'required|date',
             'email' => 'required|email',
             'appointment_date' => 'required|date',
+            
         ]);
 
         // Extract hour from the input appointment date
@@ -51,6 +52,7 @@ class AppointmentController extends Controller
             'birthdate' => $request->birthdate,
             'email' => $request->email,
             'appointment_date' => $appointmentDate,
+            'admin_approve_status' => 'pending', // Default value
         ]);
 
         return redirect()->route('appointments.index')->with('success', 'Appointment booked successfully!');

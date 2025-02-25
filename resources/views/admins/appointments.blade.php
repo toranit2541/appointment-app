@@ -34,10 +34,58 @@
                     <th class="border border-gray-300 px-4 py-2">วันที่จอง</th>
                     <th class="border border-gray-300 px-4 py-2">สร้างวันที่</th>
                     <th class="border border-gray-300 px-4 py-2">อื่นๆ</th>
+                    <th class="border border-gray-300 px-4 py-2">ยีนยัน</th>
+
                 </tr>
             </thead>
             <tbody>
-                @forelse($appointments as $appointment)
+                @forelse($pendingAppointments as $appointment)
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->id }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->prefix }} {{ $appointment->first_name }} {{ $appointment->last_name }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->email }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d H:i') }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->created_at->format('Y-m-d H:i') }}</td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            <a href="{{ route('admins.appointments.show', $appointment->id) }}" class="text-blue-500 hover:text-blue-700">ตรวจสอบ</a> |
+                            <a href="{{ route('admins.appointments.edit', $appointment->id) }}" class="text-yellow-500 hover:text-yellow-700">แก้ไข</a> |
+                            <form action="{{ route('admins.appointments.destroy', $appointment->id) }}" method="POST" style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('Are you sure?')">ลบ</button>
+                            </form>
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            <form action="{{ route('admins.appointments.approve', $appointment->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">อนุมัติ</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center py-4">ไม่มีการจองที่รออนุมัติ.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        <h1 class="text-2xl font-bold text-gray-800 mt-6">approved</h1>
+        {{-- when admin approve user will show in this table --}}
+        <table class="table-auto w-full border-collapse border border-gray-400 mt-4">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-gray-300 px-4 py-2">ลำดับ</th>
+                    <th class="border border-gray-300 px-4 py-2">ชื่อ</th>
+                    <th class="border border-gray-300 px-4 py-2">อีเมล</th>
+                    <th class="border border-gray-300 px-4 py-2">วันที่จอง</th>
+                    <th class="border border-gray-300 px-4 py-2">สร้างวันที่</th>
+                    <th class="border border-gray-300 px-4 py-2">อื่นๆ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($approvedAppointments as $appointment)
                     <tr>
                         <td class="border border-gray-300 px-4 py-2">{{ $appointment->id }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $appointment->prefix }} {{ $appointment->first_name }} {{ $appointment->last_name }}</td>
@@ -56,10 +104,11 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center py-4">ไม่มีการจองนี้.</td>
+                        <td colspan="6" class="text-center py-4">ไม่มีการจองที่อนุมัติ.</td>
                     </tr>
                 @endforelse
             </tbody>
+            
         </table>
 
         <div class="mt-4">

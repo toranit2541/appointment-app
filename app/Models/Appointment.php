@@ -17,5 +17,6 @@ class Appointment extends Model
         'birthdate',
         'email',
         'appointment_date',
+        'admin_approve_status'
     ];
 }

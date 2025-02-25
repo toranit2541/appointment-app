@@ -1,61 +1,90 @@
-@extends('layouts.main')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title', 'ผู้ดูแลระบบ')
+<head>
+    <meta charset="UTF-8">
+    <title>โรงพยาบาลรวมชัยประชารักษ์</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+</head>
 
-@section('content')
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">ผู้ใช้งานทั้งหมด</h1>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg">
 
-    @if(session('success'))
-        <p class="text-green-600 bg-green-100 border border-green-400 p-2 rounded">{{ session('success') }}</p>
-    @endif
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">การจองทั้งหมด</h1>
+        <a href="{{ route('appointments.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
+            สมุดการจอง
+        </a>
 
-    <a href="{{ route('admins.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        สร้างผู้ใช้งานใหม่
-    </a>
+        {{-- <a href="{{ route('admins.appointments') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
+            สมุดการจอง
+        </a> --}}
 
-    <div class="overflow-x-auto mt-4">
-        <table class="w-full border-collapse border border-gray-400 mt-4">
+        @if(session('success'))
+            <p class="text-green-600">{{ session('success') }}</p>
+        @endif
+
+        <table class="table-auto w-full border-collapse border border-gray-400 mt-4">
             <thead>
-                <tr class="bg-gray-200 text-gray-700">
-                    <th class="border border-gray-300 px-4 py-2">คำนำหน้า</th>
+                <tr class="bg-gray-200">
+                    <th class="border border-gray-300 px-4 py-2">ลำดับ</th>
                     <th class="border border-gray-300 px-4 py-2">ชื่อ</th>
-                    <th class="border border-gray-300 px-4 py-2">นามสกุล</th>
-                    <th class="border border-gray-300 px-4 py-2">เลขบัตรประชาชน</th>
-                    <th class="border border-gray-300 px-4 py-2">วัน-เดือน-ปี เกิด</th>
                     <th class="border border-gray-300 px-4 py-2">อีเมล</th>
+                    <th class="border border-gray-300 px-4 py-2">วันที่จอง</th>
+                    <th class="border border-gray-300 px-4 py-2">สร้างวันที่</th>
                     <th class="border border-gray-300 px-4 py-2">อื่นๆ</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($users as $user)
-                    <tr class="hover:bg-gray-100">
-                        <td class="border border-gray-300 px-4 py-2">{{ $user->title }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $user->fname }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $user->lname }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $user->idcard }}</td>
+                @forelse($appointments as $appointment)
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->id }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->prefix }} {{ $appointment->first_name }} {{ $appointment->last_name }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->email }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d H:i') }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->created_at->format('Y-m-d H:i') }}</td>
                         <td class="border border-gray-300 px-4 py-2">
-                            {{ \Carbon\Carbon::parse($user->bday)->format('d/m/Y') }}
-                        </td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $user->email }}</td>
-                        <td class="border border-gray-300 px-4 py-2 flex space-x-2">
-                            <a href="{{ route('admins.show', $user->id) }}" class="text-blue-500 hover:underline">ตรวจสอบ</a>
-                            <a href="{{ route('admins.edit', $user->id) }}" class="text-yellow-500 hover:underline">แก้ไข</a>
-                            <form action="{{ route('admins.destroy', $user->id) }}" method="POST" class="inline">
+                            <a href="{{ route('admins.appointments.show', $appointment->id) }}" class="text-blue-500 hover:text-blue-700">ตรวจสอบ</a> |
+                            <a href="{{ route('admins.appointments.edit', $appointment->id) }}" class="text-yellow-500 hover:text-yellow-700">แก้ไข</a> |
+                            <form action="{{ route('admins.appointments.destroy', $appointment->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700"
-                                        onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ?')">
-                                    ลบ
-                                </button>
+                                <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('Are you sure?')">ลบ</button>
                             </form>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-4">ไม่มีการจองนี้.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
-    </div>
 
-    <a href="{{ route('admins.appointments') }}" class="bg-gray-500 text-white px-4 py-2 rounded mt-4 inline-block">
-        ดูการจองทั้งหมด
-    </a>
-@endsection
+        <div class="mt-4">
+            <a href="{{ route('admins.appointments.export') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Export CSV</a>
+        </div>
+
+        <h1 class="text-2xl font-bold text-gray-800 mt-6">ปฏิทินการจอง</h1>
+        <div id="calendar" class="mt-4"></div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    events: '/appointments/events', // This will be your Laravel route returning JSON
+                });
+                calendar.render();
+            });
+        </script>
+
+        <div class="mt-4">
+            <a href="{{ route('admins.index') }}" class="text-blue-500 hover:text-blue-700">กลับหน้าหลัก</a>
+        </div>
+    </div>
+    <script src="{{ asset('js/script.js') }}"></script>
+</body>
+
+</html>
