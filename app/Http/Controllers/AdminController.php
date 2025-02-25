@@ -115,8 +115,9 @@ class AdminController extends Controller
     {
         $appointment->delete();
 
-        return redirect()->route('admins.appointments')->with('success', 'Appointment deleted successfully!');
+        return redirect()->route('admins.appointments.index')->with('success', 'Appointment deleted successfully!');
     }
+
 
     public function exportAppointments()
     {
