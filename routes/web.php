@@ -44,6 +44,8 @@ Route::prefix('appointments')->name('appointments.')->group(function () {
     Route::post('/', [AppointmentController::class, 'store'])->name('store');
     Route::get('/calendar', [AppointmentController::class, 'calendar'])->name('calendar');
     Route::get('/events', [AppointmentController::class, 'events'])->name('events');
+    // ✅ New route for handling booking creation with a selected date
+    Route::get('/createbooking', [AppointmentController::class, 'createBooking'])->name('createbooking');
 });
 
 // Admin routes
@@ -57,11 +59,10 @@ Route::prefix('admins')->name('admins.')->group(function () {
 
     // Appointments Management under Admin
     Route::prefix('appointments')->name('appointments.')->group(function () {
-        Route::get('/', [AdminController::class, 'appointments'])->name('index');
-        Route::get('/export', [AdminController::class, 'exportAppointments'])->name('export');
-        Route::get('/{appointment}', [AdminController::class, 'showAppointment'])->name('show');
-        Route::get('/{appointment}/edit', [AdminController::class, 'editAppointment'])->name('edit');
-        Route::put('/{appointment}', [AdminController::class, 'updateAppointment'])->name('update');
-        Route::delete('/{appointment}', [AdminController::class, 'destroyAppointment'])->name('destroy');
+        Route::get('/', [AppointmentController::class, 'index'])->name('index');
+        Route::get('/create', [AppointmentController::class, 'create'])->name('create');
+        Route::post('/', [AppointmentController::class, 'store'])->name('store');
+        Route::get('/calendar', [AppointmentController::class, 'calendar'])->name('calendar');
+        Route::get('/events', [AppointmentController::class, 'events'])->name('events');
     });
 });
