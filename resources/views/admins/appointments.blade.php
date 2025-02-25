@@ -17,9 +17,9 @@
             สมุดการจอง
         </a>
 
-        <a href="{{ route('admin.appointments') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
+        {{-- <a href="{{ route('admins.appointments') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
             สมุดการจอง
-        </a>
+        </a> --}}
 
         @if(session('success'))
             <p class="text-green-600">{{ session('success') }}</p>
