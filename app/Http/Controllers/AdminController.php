@@ -85,6 +85,18 @@ class AdminController extends Controller
         return view('admins.appointment_edit', compact('appointment'));
     }
 
+    public function approveAppointment($id)
+    {
+        // Find the appointment by ID
+        $appointment = Appointment::findOrFail($id);
+
+        // Update the status to 'approved'
+        $appointment->admin_approve_status = 'approved';
+        $appointment->save();
+
+        return redirect()->route('admins.appointments')->with('success', 'Appointment approved successfully!');
+    }
+
     public function updateAppointment(Request $request, Appointment $appointment)
     {
         $request->validate([
@@ -115,45 +127,47 @@ class AdminController extends Controller
     {
         $appointment->delete();
 
-        return redirect()->route('admins.appointments.index')->with('success', 'Appointment deleted successfully!');
+        return redirect()->route('admins.appointments')->with('success', 'Appointment deleted successfully!');
+
     }
 
 
     public function exportAppointments()
     {
-        $appointments = Appointment::all();
+        // Fetch only approved appointments
+        $appointments = Appointment::where('admin_approve_status', 'approved')->get();
 
-        $csvFileName = 'appointments_' . date('Ymd_His') . '.csv';
+        $csvFileName = 'approved_appointments_' . date('Ymd_His') . '.csv';
+
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $csvFileName . '"',
         ];
 
-        $handle = fopen('php://output', 'w');
-        fputcsv($handle, ['ลำดับ', 'คำนำหน้า', 'ชื่อ', 'นามสกุล', 'อีเมล', 'วัน-เดือน-ปี เกิด', 'เลขบัตรประชาชน', 'วันที่จอง', 'สร้างเมื่อ']);
+        return response()->streamDownload(function () use ($appointments) {
+            $handle = fopen('php://output', 'w');
 
-        foreach ($appointments as $appointment) {
-            fputcsv($handle, [
-                $appointment->id,
-                $appointment->prefix,
-                $appointment->first_name,
-                $appointment->last_name,
-                $appointment->email,
-                $appointment->birthdate,
-                $appointment->id_card,
-                $appointment->appointment_date,
-                $appointment->created_at,
-            ]);
-        }
+            // Add CSV column headers
+            fputcsv($handle, ['ลำดับ', 'คำนำหน้า', 'ชื่อ', 'นามสกุล', 'อีเมล', 'วัน-เดือน-ปี เกิด', 'เลขบัตรประชาชน', 'วันที่จอง', 'สร้างเมื่อ']);
 
-        fclose($handle);
+            // Write approved appointments to the CSV file
+            foreach ($appointments as $appointment) {
+                fputcsv($handle, [
+                    $appointment->id,
+                    $appointment->prefix,
+                    $appointment->first_name,
+                    $appointment->last_name,
+                    $appointment->email,
+                    $appointment->birthdate,
+                    $appointment->id_card,
+                    $appointment->appointment_date,
+                    $appointment->created_at,
+                ]);
+            }
 
-        return response()->stream(
-            function () use ($handle) {
-                fclose($handle);
-            },
-            200,
-            $headers
-        );
+            fclose($handle);
+        }, $csvFileName, $headers);
     }
+
+
 }
