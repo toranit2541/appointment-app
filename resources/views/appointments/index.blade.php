@@ -17,7 +17,7 @@
             <li>คลีนิกกายภาพบำบัดให้บริการ ทุกวัน เวลา 08:00 น. - 18:00 น.</li>
             <li>สำหรับ ผู้ป่วย ที่ต้องการมารับบริการทางกายภาพบำบัด ต้องติดต่อเวชระเบียนก่อนทุกครั้ง</li>
         </ul>
-
+        <br>
         <a href="{{ route('appointments.create') }}" class="mt-4 inline-block bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600">
             สมุดการจอง
         </a>
