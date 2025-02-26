@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <a href="{{ route('admins.appointments') }}" class="btn btn-secondary mt-3">กลับสู่หน้าการจอง</a>
+        <a href="{{ route('admins.appointments.index') }}" class="btn btn-secondary mt-3">กลับสู่หน้าการจอง</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

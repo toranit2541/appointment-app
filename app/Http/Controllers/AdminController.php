@@ -28,7 +28,7 @@ class AdminController extends Controller
 
         User::create($request->all());
 
-        return redirect()->route('admins.index')->with('success', 'User created successfully!');
+        return redirect()->route('admins.index')->with('success', 'สร้างผู้ใช้งานสำเร็จ');
     }
 
     public function edit($id)
@@ -47,7 +47,7 @@ class AdminController extends Controller
         $user = User::findOrFail($id);
         $user->update($request->all());
 
-        return redirect()->route('admins.index')->with('success', 'User updated successfully!');
+        return redirect()->route('admins.index')->with('success', 'อัพเดตผู้ใช้งานสำเร็จ');
     }
 
     public function destroy($id)
@@ -55,7 +55,7 @@ class AdminController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admins.index')->with('success', 'User deleted successfully!');
+        return redirect()->route('admins.index')->with('success', 'ลบผู้ใช้งานสำเร็จ');
     }
 
     // public function appointments()
@@ -81,9 +81,9 @@ class AdminController extends Controller
     }
 
     public function editAppointment(Appointment $appointment)
-    {
-        return view('admins.appointment_edit', compact('appointment'));
-    }
+{
+    return view('admins.appointment_edit', compact('appointment'));
+}
 
     public function approveAppointment($id)
     {
@@ -94,7 +94,7 @@ class AdminController extends Controller
         $appointment->admin_approve_status = 'approved';
         $appointment->save();
 
-        return redirect()->route('admins.appointments')->with('success', 'Appointment approved successfully!');
+        return redirect()->route('admins.appointments.index')->with('success', 'Appointment approved successfully!');
     }
 
     public function updateAppointment(Request $request, Appointment $appointment)

@@ -55,8 +55,8 @@
                     จอง
                 </button>
             </form>
+            <a href="{{ route('appointments.index') }}" class="block text-blue-500 mt-6">กลับ</a>
         </div>
-
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Get the selected date from URL

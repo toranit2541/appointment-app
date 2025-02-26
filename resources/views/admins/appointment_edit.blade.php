@@ -21,7 +21,7 @@
             </div>
         @endif
 
-        <form action="{{ route('admins.appointment.update', $appointment->id) }}" method="POST">
+        <form action="{{ route('admins.appointments.edit', $appointment->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -63,7 +63,7 @@
             <button type="submit" class="btn btn-primary">บันทึกการเปลี่ยนแปลง</button>
         </form>
 
-        <a href="{{ route('admins.appointments') }}" class="btn btn-secondary mt-3">กลับสู่หน้าหลัก</a>
+        <a href="{{ route('admins.appointments.index') }}" class="btn btn-secondary mt-3">กลับสู่หน้าหลัก</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
