@@ -11,10 +11,21 @@
             <h2 class="text-lg font-bold mb-4">จองการรับบริการ</h2>
             <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST" class="flex flex-col space-y-4">
                 @csrf
-                <div class='flex flex-col'>
+                <div class="flex flex-col">
                     <label class="block text-gray-700">คำนำหน้า</label>
-                    <input type="text" name="prefix" required class="w-full border-gray-300 rounded-lg p-2">
-                </div>
+                    <select name="prefix" required class="w-full border-gray-300 rounded-lg p-2">
+                        <option value="">-- เลือกคำนำหน้า --</option>
+                        <option value="นาย">นาย</option>
+                        <option value="นาง">นาง</option>
+                        <option value="นางสาว">นางสาว</option>
+                        <option value="ดร.">ดร.</option>
+                        <option value="ศาสตราจารย์">ศาสตราจารย์</option>
+                        <option value="Mr.">Mr.</option>
+                        <option value="Mrs.">Mrs.</option>
+                        <option value="Ms.">Ms.</option>
+                        <option value="Miss.">Miss.</option>
+                    </select>
+                </div>                
                 <div class='flex flex-col'>
                     <label class="block text-gray-700">ชื่อ</label>
                     <input type="text" name="first_name" required class="w-full border-gray-300 rounded-lg p-2">
