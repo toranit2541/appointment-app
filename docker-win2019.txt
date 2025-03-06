@@ -1,0 +1,14 @@
+//install docker
+winver
+Install-WindowsFeature -Name Containers -IncludeAllSubFeature -Restart
+Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
+Install-Package -Name docker -ProviderName DockerMsftProvider -Force
+Restart-Computer -Force
+docker version
+
+//start docker
+Set-Service -Name docker -StartupType Automatic
+Start-Service docker
+
+//test docker
+docker run hello-world
