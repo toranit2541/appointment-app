@@ -69,6 +69,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 ## How to run this project
 Open CMD, terminal or etc and run
 
+docker network create appointment-app_laravel_network
+
 docker-compose up -d --build
 
 docker exec -it laravel_app bash
@@ -80,6 +82,9 @@ cp .env.example .env
 php artisan key:generate
 
 php artisan migrate
+ 
 
+## If have error this
 
-##
+ Base table or view not found: 1146 Table 'laravel.sessions' doesn't exist (Connection: mysql, SQL: select * from `sessions` where `id` = 3OW9RvTIUUNLYrgEIQJ0XpWnLwtbE6JVlpMJRV6n limit 1)
+ 
