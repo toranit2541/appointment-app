@@ -129,9 +129,9 @@
             });
         </script>
 
-        <div class="mt-4">
+        <!-- <div class="mt-4">
             <a href="{{ route('admins.index') }}" class="text-blue-500 hover:text-blue-700">กลับหน้าหลัก</a>
-        </div>
+        </div> -->
     </div>
     <script src="{{ asset('js/script.js') }}"></script>
 </body>
